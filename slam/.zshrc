@@ -49,5 +49,6 @@ alias l='ls -CF'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/ros/melodic/setup.zsh
+source /opt/ros/noetic/setup.zsh
 source ~/ws/cassie_ros/catkin_ws/devel/setup.zsh
+source /opt/intel/bin/compilervars.sh intel64
