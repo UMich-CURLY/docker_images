@@ -1,10 +1,9 @@
 #FROM tensorflow/tensorflow:1.12.0-gpu
-#FROM osrf/ros:melodic-desktop-full
-FROM nvidia/opengl:1.2-glvnd-devel-ubuntu18.04
-# author
+#FROM osrf/ros:noetic-desktop-full
+FROM nvidia/opengl:1.2-glvnd-devel-ubuntu20.04
 LABEL org.opencontainers.image.authors="rzh@umich.edu,junzhewu@umich.edu"
 LABEL description="SLAM environment for Cassie"
-LABEL version="0.1"
+LABEL version="0.2"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -44,7 +43,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         mlocate \
         zlib1g-dev \
         libopenblas-dev \
-        libqt4-dev \
         libflann-dev \
         libopencv-dev \
         libpcl-dev \
@@ -60,6 +58,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
          emacs \
          libpcap-dev \
          gnupg2 \
+         x11-xserver-utils \
          lsb-release && \
     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
@@ -69,7 +68,7 @@ RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E
 
 RUN apt-get update
 
-RUN apt-get install -y --no-install-recommends ros-melodic-desktop-full
+RUN apt-get install -y --no-install-recommends ros-noetic-desktop-full
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
@@ -91,3 +90,9 @@ RUN mkdir -p /root/.cache/gitstatus \
 
 # install tilix
 RUN apt-get install -y --no-install-recommends tilix
+
+RUN wget -O - https://raw.githubusercontent.com/eddelbuettel/mkl4deb/master/script.sh | bash \
+&& ln /usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 /usr/lib/libBoost::serialization.so \
+&& ln /usr/lib/x86_64-linux-gnu/libboost_timer.so.1.71.0 /usr/lib/libBoost::timer.so \
+&& apt-get install -y --no-install-recommends libmkl-intel-lp64 libmkl-gnu-thread libmkl-core \
+&& ln -s /opt/intel/compilers_and_libraries_2018.2.199/linux/compiler/lib/intel64_lin/libiomp5.so /usr/lib/libiomp5.so
