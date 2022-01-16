@@ -9,3 +9,9 @@ Then to build the docker image so that you can run it, type `docker build --tag 
 
 ### How to run this docker file?
 `docker-compose run slam`
+
+## FAQ
+
+### Memory leak problem when running roscore
+Use ulimits config of docker to limit the number of file descriptor. Detail information can be found here:
+https://answers.ros.org/question/336963/rosout-high-memory-usage/.
