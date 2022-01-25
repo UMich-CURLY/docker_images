@@ -1,10 +1,10 @@
-FROM tensorflow/tensorflow:1.12.0-gpu
+FROM tensorflow/tensorflow:1.15.2-gpu
 # e.g. FROM osrf/ros:kinetic-desktop-full
 
 # author
 MAINTAINER Ray Zhang
 
-LABEL version="0.6"
+LABEL version="0.7"
 LABEL description="Melodic ROS Semantic mapping docker file"
 
 # optional, if the default user is not "root", you might need to switch to root here and at the end of the script to the original user again.
@@ -39,6 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libflann-dev \
          libusb-1.0-0-dev \
          libgtest-dev \
+         htop \
          pkg-config \
         emacs && \
     rm -rf /var/lib/apt/lists/*
