@@ -91,8 +91,11 @@ RUN mkdir -p /root/.cache/gitstatus \
 # install tilix
 RUN apt-get install -y --no-install-recommends tilix
 
+# install intel-mkl
 RUN wget -O - https://raw.githubusercontent.com/eddelbuettel/mkl4deb/master/script.sh | bash \
 && ln /usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 /usr/lib/libBoost::serialization.so \
 && ln /usr/lib/x86_64-linux-gnu/libboost_timer.so.1.71.0 /usr/lib/libBoost::timer.so \
-&& apt-get install -y --no-install-recommends libmkl-intel-lp64 libmkl-gnu-thread libmkl-core \
+&& ln /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0 /usr/lib/libBoost::thread.so \
+&& ln /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0 /usr/lib/libBoost::chrono.so \
+&& apt-get install -y --no-install-recommends libmkl-intel-lp64 libmkl-gnu-thread libmkl-core libmetis-dev \
 && ln -s /opt/intel/compilers_and_libraries_2018.2.199/linux/compiler/lib/intel64_lin/libiomp5.so /usr/lib/libiomp5.so
