@@ -6,7 +6,7 @@ networks:
 
 services:
   ros-master:
-    image: umrobotics/slam:latest
+    image: umrobotics/curly_slam:latest
     entrypoint: /bin/zsh 
     command: -c "source /opt/ros/melodic/setup.zsh && stdbuf -o L roscore"
     networks:
@@ -16,10 +16,10 @@ services:
 
 
   slam:
-    image: umrobotics/slam:latest
+    image: umrobotics/curly_slam:latest
     # depends_on:
     #   - ros-master
-    container_name: slam
+    container_name: slam_test
     networks:
       - ros
     environment:
@@ -41,6 +41,7 @@ services:
       - .zshrc:/root/.zshrc:rw
       - .zsh_history:/root/.zsh_history:rw
       - /home/$USER/Projects/curly/:/root/ws/
+      - /run/media/link/Linux/rosbag:/root/ws/rosbag
     ulimits:
       nofile:
         soft: 65536
