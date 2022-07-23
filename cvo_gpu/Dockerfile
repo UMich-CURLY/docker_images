@@ -75,21 +75,12 @@ RUN  apt update && apt-get install -y software-properties-common && \
 
 ######## Install Eigen 3.3.9
 RUN  mkdir -p /home/root/tmp/ \
-<<<<<<< HEAD
-&&   wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2 \
-&&   tar -xf eigen-3.4.0.tar.bz2  && rm eigen-3.4.0.tar.bz2 \
-&&   mv eigen-3.4.0 /home/root/tmp/eigen-3.4.0 \
-&&   cd /home/root/tmp/eigen-3.4.0 \
-&& export CC=gcc-9 && export CXX=g++-9 \
-&&   mkdir build && cd build && cmake .. && make -j && make install
-=======
     &&   wget https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.bz2 \
     &&   tar -xf eigen-3.3.9.tar.bz2  && rm eigen-3.3.9.tar.bz2 \
     &&   mv eigen-3.3.9 /home/root/tmp/eigen-3.3.9 \
     &&   cd /home/root/tmp/eigen-3.3.9 \
     &&   export CC=gcc-9 &&  export CXX=g++-9 \
     &&   mkdir build && cd build && cmake .. && make -j && make install
->>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 
 ######## Install sophus
 RUN  mkdir -p /home/root/tmp/ \
@@ -107,16 +98,10 @@ RUN  mkdir -p /home/root/tmp/ \
 
 ########### Install ceres
 RUN cd /home/root/tmp && export CC=gcc-9 && export CXX=g++-9 \
-<<<<<<< HEAD
-&& wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.1.0.tar.gz \
-&& tar zxf 2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 \
-&&  make -j4 && make install
-=======
     && wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.1.0.tar.gz \
     &&   export CC=gcc-9 &&  export CXX=g++-9 \
     && tar zxf 2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 \
     &&  make -j8 && make install
->>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 
 ########### Install yaml-cpp 
 RUN cd /home/root/tmp \
@@ -140,38 +125,20 @@ RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && 
 #RUN rm -rf /home/root/tmp/*
 ########### Install pcl-1.9.1
 RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
-<<<<<<< HEAD
 && wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
 && tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
 && mv pcl-pcl-1.12.1 pcl-1.12.1  \
 && mkdir -p pcl-1.12.1/build && cd /home/root/tmp/pcl-1.12.1/build  \
 && cmake .. -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_MARCHNATIVE=OFF -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON && make -j8 && make install
-#=======
 #&& wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
 #&& tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
 #&& mv pcl-pcl-1.9.1 pcl-1.9.1  \
 #&& mkdir -p pcl-1.9.1/build
-
 #COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
-
 #RUN cd /home/root/tmp/pcl-1.9.1/build  \
 #&&   export CC=gcc-9 &&  export CXX=g++-9 \
 #&& cmake .. && make -j4 && make install
 
-#>>>>>>> a6e64659812ce346cff082b0ab73d2c69670e60e
-=======
-    && wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
-    && tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
-    && mv pcl-pcl-1.9.1 pcl-1.9.1  \
-    && mkdir -p pcl-1.9.1/build
-
-COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
-
-RUN cd /home/root/tmp/pcl-1.9.1/build  \
-    &&   export CC=gcc-9 &&  export CXX=g++-9 \
-    && cmake .. && make -j8 && make install
-
->>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 RUN rm -rf /home/root/tmp/*
 
 
