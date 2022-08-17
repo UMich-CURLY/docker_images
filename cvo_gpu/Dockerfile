@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.2.2-devel-ubuntu18.04
+FROM nvidia/cudagl:11.3.0-devel-ubuntu18.04
 #FROM osrf/ros:melodic-desktop-full
 
 # author
