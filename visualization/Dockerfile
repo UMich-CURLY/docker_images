@@ -82,3 +82,18 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compute,utility,display
 
 # USER original_user
+# emacs tools
+RUN  apt update  && apt install -y software-properties-common
+RUN    add-apt-repository ppa:kelleyk/emacs 
+RUN     wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
+RUN     wget --no-check-certificate -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - 
+RUN     add-apt-repository 'deb http://apt.llvm.org/bionic/   llvm-toolchain-bionic-10  main' 
+RUN     apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'  && apt update 
+RUN     apt install -y emacs27 python3-pip clang-10 clangd-10 llvm-10 valgrind lldb-10 llvm-10-dev libllvm10 llvm-10-runtime bear mlocate global cmake 
+RUN     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+
+# pangolin
+RUN apt update
+RUN apt install -y libglew-dev libopencv-dev
+RUN mkdir -p /tmp && cd /tmp && wget https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v0.6.zip
+RUN cd /tmp && unzip v0.6.zip && cd Pangolin-0.6  && mkdir build && cd build && cmake .. && make -j install 
