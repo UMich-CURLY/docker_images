@@ -11,7 +11,7 @@ docker run -it --net=host --gpus all  \
        -e "TERM=xterm-256color" \
        --env="QT_X11_NO_MITSHM=1" \
        -e NVIDIA_DRIVER_CAPABILITIES=all -e DISPLAY=$DISPLAY -e USER=$USER \
-       -v "/home/$USER/code/docker_visualization_home:/home/$USER/" \
+       -v "/home/$USER/code/docker_home/${container_name}/:/home/$USER/" \
        -v "/run/media/$USER/Samsung_T5/:/home/$USER/code/docker_home/media/Samsung_T5"  --workdir="/home/$USER/" \
        --device /dev/nvidia0 --device /dev/nvidia-modeset --device /dev/nvidiactl --device /dev/nvidia-uvm --device /dev/nvidia-uvm-tools --name=${container_name} \
        umrobotics/visualization:latest
