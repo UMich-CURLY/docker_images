@@ -67,13 +67,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
          lsb-release && \
     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-
-RUN apt-get update
-
-RUN apt-get install -y --no-install-recommends ros-melodic-desktop-full
+# install ros
+RUN apt update
+RUN apt install -y ca-certificates
+RUN sh -c ' echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+RUN apt-get --fix-missing update
+RUN apt-get install -y  ros-melodic-desktop-full
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
@@ -81,7 +81,7 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compute,utility,display
 
-# USER original_user
+
 # emacs tools
 RUN  apt update  && apt install -y software-properties-common
 RUN    add-apt-repository ppa:kelleyk/emacs 
@@ -94,6 +94,15 @@ RUN     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # pangolin
 RUN apt update
-RUN apt install -y libglew-dev libopencv-dev
+RUN apt install -y libglew-dev libopencv-dev python3-rosdep
 RUN mkdir -p /tmp && cd /tmp && wget https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v0.6.zip
-RUN cd /tmp && unzip v0.6.zip && cd Pangolin-0.6  && mkdir build && cd build && cmake .. && make -j install 
+RUN cd /tmp && unzip v0.6.zip && cd Pangolin-0.6  && mkdir build && cd build && cmake .. && make -j install
+RUN rosdep init
+
+# gtsam 
+RUN git clone https://github.com/borglab/gtsam.git gtsam/  -b 4.1.1
+RUN cd gtsam/ \
+    && mkdir -p build \
+    && cd build \
+    && cmake .. -DGTSAM_USE_SYSTEM_EIGEN=TRUE \
+    && make install -j16
