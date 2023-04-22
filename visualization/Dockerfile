@@ -94,7 +94,7 @@ RUN     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # pangolin
 RUN apt update
-RUN apt install -y libglew-dev libopencv-dev python3-rosdep
+RUN apt install -y libglew-dev libopencv-dev iputils-ping python-pip python3-rosdep 
 RUN mkdir -p /tmp && cd /tmp && wget https://github.com/stevenlovegrove/Pangolin/archive/refs/tags/v0.6.zip
 RUN cd /tmp && unzip v0.6.zip && cd Pangolin-0.6  && mkdir build && cd build && cmake .. && make -j install
 RUN rosdep init
