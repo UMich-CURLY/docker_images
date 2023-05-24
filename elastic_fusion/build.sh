@@ -1,0 +1,1 @@
+docker build --tag umrobotics/elastic_fusion .

@@ -1,5 +1,5 @@
 ## CVO
-This docker file sets up the environment for CVO. It aims at installing all non-conflicting related softwares, and encourages download-and-run. We use Nvidia-Docker 2
+This docker file sets up the environment for CVO. It aims at installing all non-conflicting related softwares, and encourages download-and-run. Please install [Nvidia-Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)
 
 
 ### How to build the docker image from `Dockerfile`?

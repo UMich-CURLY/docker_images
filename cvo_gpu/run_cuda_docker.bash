@@ -1,6 +1,9 @@
 container_name=$1
 
 xhost +local:
+
+## Note: a) update  -v "/home/$USER/code/docker_home/cvo/:/home/$USER/" for specifying your home directory inside docker
+##       b) update "/run/media/$USER/Samsung_T5/:/home/$USER/media/Samsung_T5"  to your own external hard drive if any
 docker run -it --net=host --gpus all  -e DISPLAY=${DISPLAY} \
   -e QT_GRAPHICSSYSTEM=native \
   -e NVIDIA_DRIVER_CAPABILITIES=all \

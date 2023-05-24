@@ -1,0 +1,55 @@
+version: '3.9'
+
+networks:
+  ros:
+    driver: bridge
+
+services:
+  ros-master:
+    image: umrobotics/elastic_fusion:latest
+    entrypoint: /bin/zsh
+    command: -c "source /opt/ros/melodic/setup.zsh && stdbuf -o L roscore"
+    networks:
+      - ros
+    restart: always
+    container_name: ros-master
+
+  elastic_fusion:
+    image: umrobotics/elastic_fusion:latest
+    # depends_on:
+    #   - ros-master
+    container_name: slam
+    networks:
+      - ros
+    environment:
+      - "DISPLAY=${DISPLAY}"
+      - "QT_GRAPHICSSYSTEM=native"
+      - "NVIDIA_DRIVER_CAPABILITIES=all"
+      - "TERM=xterm-256color"
+      - "XAUTHORITY"
+    working_dir: "/root/ws/"
+    privileged: true
+    devices:
+      - /dev/nvidia0
+      - /dev/nvidia-modeset
+      - /dev/nvidiactl
+      - /dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - .zshrc:/root/.zshrc:rw
+      - .zsh_history:/root/.zsh_history:rw
+      # - /home/$USER/Projects/curly/:/root/ws/
+      # - /run/media/$USER/CTOS-Storage/rosbag/:/root/ws/rosbag/
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    entrypoint: /bin/zsh

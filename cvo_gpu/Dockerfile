@@ -98,7 +98,7 @@ RUN  mkdir -p /home/root/tmp/ \
 RUN cd /home/root/tmp && export CC=gcc-9 && export CXX=g++-9 \
 && wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.1.0.tar.gz \
 && tar zxf 2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 \
-&&  make -j && make install
+&&  make -j4 && make install
 
 ########### Install yaml-cpp 
 RUN cd /home/root/tmp \
@@ -122,11 +122,25 @@ RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && 
 #RUN rm -rf /home/root/tmp/*
 ########### Install pcl-1.9.1
 RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
-&& wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
-&& tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
-&& mv pcl-pcl-1.12.1 pcl-1.12.1  \
-&& mkdir -p pcl-1.12.1/build && cd /home/root/tmp/pcl-1.12.1/build  \
-&& cmake .. -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_MARCHNATIVE=OFF -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON && make -j8 && make install
+#<<<<<<< HEAD
+#&& wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
+#&& tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
+#&& mv pcl-pcl-1.12.1 pcl-1.12.1  \
+#&& mkdir -p pcl-1.12.1/build && cd /home/root/tmp/pcl-1.12.1/build  \
+#&& cmake .. -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_MARCHNATIVE=OFF -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON && make -j8 && make install
+#=======
+&& wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
+&& tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
+&& mv pcl-pcl-1.9.1 pcl-1.9.1  \
+&& mkdir -p pcl-1.9.1/build
+
+COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
+
+RUN cd /home/root/tmp/pcl-1.9.1/build  \
+&&   export CC=gcc-9 &&  export CXX=g++-9 \
+&& cmake .. && make -j4 && make install
+
+#>>>>>>> a6e64659812ce346cff082b0ab73d2c69670e60e
 RUN rm -rf /home/root/tmp/*
 
 
@@ -144,7 +158,7 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
-# emacs tools
+# emacs tools. Feel free to comment them out of you don't use emacs and llvm tools
 RUN  apt update && \ 
      add-apt-repository ppa:kelleyk/emacs && \
      wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
