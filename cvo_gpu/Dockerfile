@@ -121,8 +121,7 @@ RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
 COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
 
 RUN cd /home/root/tmp/pcl-1.9.1/build  \
-&&   export CC=gcc-9 &&  export CXX=g++-9 \
-&& cmake .. && make -j4 && make install
+&& cmake -DCMAKE_BUILD_TYPE=Release .. && make -j4 && make -j4 install
 
 RUN rm -rf /home/root/tmp/*
 
@@ -142,14 +141,14 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # emacs tools. Feel free to comment them out of you don't use emacs and llvm tools
-RUN  apt update && \ 
-     add-apt-repository ppa:kelleyk/emacs && \
-     wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
-     wget --no-check-certificate -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \ 
-     add-apt-repository 'deb http://apt.llvm.org/bionic/   llvm-toolchain-bionic-10  main' && \
-     apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'  && apt update &&\
-     apt install -y emacs27 python3-pip clang-10 clangd-10 llvm-10 lldb-10 llvm-10-dev libllvm10 llvm-10-runtime bear mlocate global cmake && \
-     apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+# RUN  apt update && \
+#      add-apt-repository ppa:kelleyk/emacs && \
+#      wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add - && \
+#      wget --no-check-certificate -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+#      add-apt-repository 'deb http://apt.llvm.org/bionic/   llvm-toolchain-bionic-10  main' && \
+#      apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'  && apt update &&\
+#      apt install -y emacs27 python3-pip clang-10 clangd-10 llvm-10 lldb-10 llvm-10-dev libllvm10 llvm-10-runtime bear mlocate global cmake && \
+#      apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN updatedb
 # USER original_user
