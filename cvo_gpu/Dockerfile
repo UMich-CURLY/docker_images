@@ -1,5 +1,7 @@
 FROM nvidia/cudagl:11.3.0-devel-ubuntu18.04
 #FROM osrf/ros:melodic-desktop-full
+ARG DEBIAN_FRONTEND=neoninteractive
+ARG USER
 
 # author
 MAINTAINER Ray Zhang
@@ -122,23 +124,22 @@ RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && 
 #RUN rm -rf /home/root/tmp/*
 ########### Install pcl-1.9.1
 RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
-#<<<<<<< HEAD
-#&& wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
-#&& tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
-#&& mv pcl-pcl-1.12.1 pcl-1.12.1  \
-#&& mkdir -p pcl-1.12.1/build && cd /home/root/tmp/pcl-1.12.1/build  \
-#&& cmake .. -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_MARCHNATIVE=OFF -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON && make -j8 && make install
+&& wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
+&& tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
+&& mv pcl-pcl-1.12.1 pcl-1.12.1  \
+&& mkdir -p pcl-1.12.1/build && cd /home/root/tmp/pcl-1.12.1/build  \
+&& cmake .. -DPCL_ENABLE_SSE=OFF -DPCL_ENABLE_AVX=OFF -DPCL_ENABLE_MARCHNATIVE=OFF -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON && make -j8 && make install
 #=======
-&& wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
-&& tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
-&& mv pcl-pcl-1.9.1 pcl-1.9.1  \
-&& mkdir -p pcl-1.9.1/build
+#&& wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
+#&& tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
+#&& mv pcl-pcl-1.9.1 pcl-1.9.1  \
+#&& mkdir -p pcl-1.9.1/build
 
-COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
+#COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
 
-RUN cd /home/root/tmp/pcl-1.9.1/build  \
-&&   export CC=gcc-9 &&  export CXX=g++-9 \
-&& cmake .. && make -j4 && make install
+#RUN cd /home/root/tmp/pcl-1.9.1/build  \
+#&&   export CC=gcc-9 &&  export CXX=g++-9 \
+#&& cmake .. && make -j4 && make install
 
 #>>>>>>> a6e64659812ce346cff082b0ab73d2c69670e60e
 RUN rm -rf /home/root/tmp/*
@@ -170,3 +171,11 @@ RUN  apt update && \
 
 RUN updatedb
 # USER original_user
+
+# use current user
+ARG USER_ID
+ARG GROUP_ID
+RUN if  ! grep -q $GROUP_ID /etc/group ; then  groupadd --gid $GROUP_ID $USER; fi 
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USER
+RUN adduser $USER sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
