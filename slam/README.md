@@ -13,20 +13,20 @@ This docker file sets up the environment for [CURLY SLAM](https://github.com/UMi
     -  Docker on MacOS or Windows is not suggested because lack of GPU support. You may encounter opengl issues when using `rviz`.
 1. Clone this repository:
     ```bash
-    git clone https://github.com/UMich-CURLY/docker_images.git
+    git clone git@github.com:UMich-CURLY/curly_slam.git
     ```
 1. Build the Docker image:
     ```bash
-    cd slam
-    docker build --tag umrobotics/curly_slam . > build.log
+    cd docker
+    docker build --build-arg USER=$USER --tag umcurly/curly_slam .
     ```
     - See `build.log` for building details. The image may take ~20 minutes to build, so please grab a cup of coffee and relax.
     - If you encounter any problem during this step, please submit a new issue and paste your error message there. We will help you as soon as possible.
 1. When you finish the coffee or the container is built, please check `docker-compose.yml`.
     - You may want to change line 44-45 (or somewhere around):
         ```bash
-        - /home/$USER/Projects/curly/:/root/ws/
-        - /run/media/$USER/CTOS-Storage/rosbag/:/root/ws/rosbag/
+        - /home/$USER/Projects/curly_slam/:/home/${USER}/ws/
+        - /run/media/$USER/CTOS-Storage/data/:/home/${USER}/ws/external_data/
         ```
         These two lines will make the folders on your host system available inside the container.
     - It is a good practice to keep your working files on your host system. In that way, if the container is deleted by accident (which happens a lot), you will not lose your works. Guess how I learn this~
@@ -47,8 +47,8 @@ This docker file sets up the environment for [CURLY SLAM](https://github.com/UMi
     ```bash
     docker-compose run slam
     ```
-    Note: You don't need to run `docker-compose run slam` every time you want to enter your existing workspace. You can use `docker start [container_id]` and `docker exec -it [container_id] /bin/zsh`  to enter your old container.  
-    
+    Note: You don't need to run `docker-compose run slam` every time you want to enter your existing workspace. You can use `docker start [container_id]` and `docker exec -it [container_id] /bin/bash`  to enter your old container.  
+
 1. Voilà！ Now try to build your ROS workspace!
 
 
@@ -67,7 +67,10 @@ Note: `xhost +` is simple but unsecure. Check other solutions [here](http://wiki
 
 ### `g++: internal compiler error: Killed (program cc1plus)` (AKA. out of memory)
 
-To take full advantage of all CPU cores, this image will try to use 16 jobs to compile the libraries. However, this may cause an out-of-memory problem, especially when compiling OpenCV. In that case, you can change all `-j16` to `-j4` or even `-j1` to save memory. Another option is to add swap partition. See more discussion here: [make -j 8 g++: internal compiler error: Killed (program cc1plus)](https://stackoverflow.com/questions/30887143/make-j-8-g-internal-compiler-error-killed-program-cc1plus)
+To take full advantage of all CPU cores, this image will try to use 16 jobs to compile the libraries. However, this may cause an out-of-memory problem, especially when compiling OpenCV. In that case, you can change all `-j6` to `-j4` or even `-j1` to save memory. Another option is to add swap partition. See more discussion here: [make -j 8 g++: internal compiler error: Killed (program cc1plus)](https://stackoverflow.com/questions/30887143/make-j-8-g-internal-compiler-error-killed-program-cc1plus)
+
+### My system freeze when building the libraries!
+This is also caused by out of memory problem. Please refer to the last question for solution.
 
 ### How to open the container I used last time?
 

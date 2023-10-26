@@ -2,10 +2,8 @@ version: '3.9'
 
 services:
   cvo:
-    image: cvo/cvo:latest
+    image: umrobotics/cvo:latest
     container_name: cvo
-      #networks:
-      #- ros
     environment:
       - "DISPLAY=${DISPLAY}"
       - "QT_GRAPHICSSYSTEM=native"
@@ -22,7 +20,6 @@ services:
       - /dev/nvidiactl
       - /dev/nvidia-uvm
       - /dev/nvidia-uvm-tools
-        #user: "${UID}:${GID}"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/${USER}/code/docker_home/cvo:/home/${USER}/:rw
@@ -38,7 +35,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    
     deploy:
       resources:
         reservations:

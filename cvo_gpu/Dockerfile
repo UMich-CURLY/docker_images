@@ -22,73 +22,82 @@ RUN apt-get update \
 
 # remove deprecated nvidia key
 RUN apt install -y wget && wget -qO - https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - \
-   &&  apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+    &&  apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 
 RUN  apt update && apt-get install -y software-properties-common && \
-     add-apt-repository ppa:ubuntu-toolchain-r/test && \
-     apt-get update && apt-get install -y --no-install-recommends \
-        sudo \
-        gcc-9 \
-        g++-9 \
-        dialog \
-        apt-utils \
-        libeigen3-dev \
-        git \
-        mercurial \
-        pkg-config \
-        mesa-utils \
-        libxau-dev \
-        libxdmcp-dev \
-        libxcb1-dev \
-        libxext-dev \
-        libx11-dev \ 
-        git \
-        tmux \
-        wget \
-        curl \
-        cmake \
-        vim \ 
-        build-essential \
-        unzip \
-        autoconf \
-        autogen \
-        automake \
-        libtool \
-        mlocate \
-        zlib1g-dev \
-        libopenblas-dev \
-        qt5-default \
-        libflann-dev \
-        libopencv-dev \
-        libpcl-dev \
-        libboost-all-dev \
-        libsuitesparse-dev \
-        libatlas-base-dev \
-        libtbb-dev \
-         libusb-1.0-0-dev \
-         libgtest-dev \
-        libgoogle-glog-dev \
-         pkg-config \
-         software-properties-common \
-         cmake-curses-gui \
-         gdb 
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    sudo \
+    gcc-9 \
+    g++-9 \
+    dialog \
+    apt-utils \
+    libeigen3-dev \
+    git \
+    mercurial \
+    pkg-config \
+    mesa-utils \
+    libxau-dev \
+    libxdmcp-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libx11-dev \ 
+    git \
+    tmux \
+    wget \
+    curl \
+    cmake \
+    vim \ 
+    build-essential \
+    unzip \
+    autoconf \
+    autogen \
+    automake \
+    libtool \
+    mlocate \
+    zlib1g-dev \
+    libopenblas-dev \
+    qt5-default \
+    libflann-dev \
+    libopencv-dev \
+    libpcl-dev \
+    libboost-all-dev \
+    libsuitesparse-dev \
+    libatlas-base-dev \
+    libtbb-dev \
+    libusb-1.0-0-dev \
+    libgtest-dev \
+    libgoogle-glog-dev \
+    pkg-config \
+    software-properties-common \
+    cmake-curses-gui \
+    gdb 
 
 ######## Install Eigen 3.3.9
 RUN  mkdir -p /home/root/tmp/ \
+<<<<<<< HEAD
 &&   wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2 \
 &&   tar -xf eigen-3.4.0.tar.bz2  && rm eigen-3.4.0.tar.bz2 \
 &&   mv eigen-3.4.0 /home/root/tmp/eigen-3.4.0 \
 &&   cd /home/root/tmp/eigen-3.4.0 \
 && export CC=gcc-9 && export CXX=g++-9 \
 &&   mkdir build && cd build && cmake .. && make -j && make install
+=======
+    &&   wget https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.bz2 \
+    &&   tar -xf eigen-3.3.9.tar.bz2  && rm eigen-3.3.9.tar.bz2 \
+    &&   mv eigen-3.3.9 /home/root/tmp/eigen-3.3.9 \
+    &&   cd /home/root/tmp/eigen-3.3.9 \
+    &&   export CC=gcc-9 &&  export CXX=g++-9 \
+    &&   mkdir build && cd build && cmake .. && make -j && make install
+>>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 
 ######## Install sophus
 RUN  mkdir -p /home/root/tmp/ \
-&&   wget https://github.com/strasdat/Sophus/archive/v1.0.0.tar.gz \
-&&   tar -xf v1.0.0.tar.gz  \
-&&   mv Sophus-1.0.0 /home/root/tmp/Sophus-1.0.0 \
-&&   cd /home/root/tmp/Sophus-1.0.0 \
-&&   mkdir build && cd build && cmake .. && make -j && make install
+    &&   wget https://github.com/strasdat/Sophus/archive/v1.0.0.tar.gz \
+    &&   tar -xf v1.0.0.tar.gz  \
+    &&   mv Sophus-1.0.0 /home/root/tmp/Sophus-1.0.0 \
+    &&   cd /home/root/tmp/Sophus-1.0.0 \
+    &&   mkdir build && cd build && cmake .. && make -j && make install
 
 ########### Install gtsam
 #RUN cd /home/root/tmp/ \
@@ -98,19 +107,26 @@ RUN  mkdir -p /home/root/tmp/ \
 
 ########### Install ceres
 RUN cd /home/root/tmp && export CC=gcc-9 && export CXX=g++-9 \
+<<<<<<< HEAD
 && wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.1.0.tar.gz \
 && tar zxf 2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 \
 &&  make -j4 && make install
+=======
+    && wget https://github.com/ceres-solver/ceres-solver/archive/refs/tags/2.1.0.tar.gz \
+    &&   export CC=gcc-9 &&  export CXX=g++-9 \
+    && tar zxf 2.1.0.tar.gz && mkdir ceres-bin && cd ceres-bin && cmake ../ceres-solver-2.1.0 \
+    &&  make -j8 && make install
+>>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 
 ########### Install yaml-cpp 
 RUN cd /home/root/tmp \
-&& wget https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.zip \
-&& unzip yaml-cpp-0.7.0.zip && rm yaml-cpp-0.7.0.zip \
-&& mv yaml-cpp-yaml-cpp-0.7.0/ yaml-cpp-0.7.0/ 
+    && wget https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.zip \
+    && unzip yaml-cpp-0.7.0.zip && rm yaml-cpp-0.7.0.zip \
+    && mv yaml-cpp-yaml-cpp-0.7.0/ yaml-cpp-0.7.0/ 
 
 COPY CMakeLists.txt.yaml-cpp /home/root/tmp/yaml-cpp-0.7.0/CMakeLists.txt
 
-RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && make -j && make install
+RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && make -j8 && make install
 
 ########### Install pcl-1.9.1
 #RUN cd /home/root/tmp/ && export CC=gcc-7 && export CXX=g++-7  \
@@ -124,6 +140,7 @@ RUN cd /home/root/tmp/yaml-cpp-0.7.0/ && mkdir build && cd build && cmake .. && 
 #RUN rm -rf /home/root/tmp/*
 ########### Install pcl-1.9.1
 RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
+<<<<<<< HEAD
 && wget https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.12.1.tar.gz \
 && tar -xf pcl-1.12.1.tar.gz && rm pcl-1.12.1.tar.gz \
 && mv pcl-pcl-1.12.1 pcl-1.12.1  \
@@ -142,6 +159,19 @@ RUN cd /home/root/tmp/ && export CC=gcc-9 && export CXX=g++-9  \
 #&& cmake .. && make -j4 && make install
 
 #>>>>>>> a6e64659812ce346cff082b0ab73d2c69670e60e
+=======
+    && wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz \
+    && tar -xf pcl-1.9.1.tar.gz && rm pcl-1.9.1.tar.gz \
+    && mv pcl-pcl-1.9.1 pcl-1.9.1  \
+    && mkdir -p pcl-1.9.1/build
+
+COPY  boost.h  /home/root/tmp/pcl-1.9.1/io/include/pcl/io/boost.h
+
+RUN cd /home/root/tmp/pcl-1.9.1/build  \
+    &&   export CC=gcc-9 &&  export CXX=g++-9 \
+    && cmake .. && make -j8 && make install
+
+>>>>>>> c17dceeccc9ef8fc6feec31c37be38c1868f2b7c
 RUN rm -rf /home/root/tmp/*
 
 
@@ -170,9 +200,7 @@ RUN  apt update && \
      apt clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
 RUN updatedb
-# USER original_user
 
-# use current user
 ARG USER_ID
 ARG GROUP_ID
 RUN if  ! grep -q $GROUP_ID /etc/group ; then  groupadd --gid $GROUP_ID $USER; fi 

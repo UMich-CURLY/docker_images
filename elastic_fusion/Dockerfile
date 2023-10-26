@@ -3,19 +3,14 @@ LABEL org.opencontainers.image.authors="junzhewu@umich.edu"
 LABEL description="Container for Elastic Bridge (ROS wrapper for ElasticFusion)"
 LABEL version="0.1"
 
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
-    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && dpkg-reconfigure --frontend=noninteractive locales \
-    && update-locale LANG=en_US.UTF-8
-
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
     ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compute,utility,display
 
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 # install libraries and tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -67,13 +62,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
 # install ROS
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+# RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+# RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-RUN apt-get update
+# RUN apt-get update
 
-RUN apt-get install -y --no-install-recommends ros-noetic-desktop-full
+# RUN apt-get install -y --no-install-recommends ros-noetic-desktop-full
 
 # install zsh
 RUN git clone https://github.com/tccoin/easy-linux.git /root/easy-linux \
@@ -102,10 +97,10 @@ RUN git clone https://github.com/RMonica/elastic_bridge.git \
 
 # Compile ElasticFusion Core module
 ## Update cmake
-RUN sudo apt-get install -y --no-install-recommends software-properties-common \
+RUN sudo apt-get update \
+    && sudo apt-get install -y --no-install-recommends software-properties-common \
     && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add - \
     && sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \
-    && sudo apt-get update \
     && sudo apt-get install -y --no-install-recommends cmake
 
 ## Compile dependencies
@@ -118,7 +113,8 @@ RUN cd /root/elstic_ws/src/elastic_bridge/deps/ElasticFusion/ \
     && make -j8
 
 
-RUN sudo apt-get install -y --no-install-recommends cmake-qt-gui git build-essential libusb-1.0-0-dev libudev-dev openjdk-11-jdk freeglut3-dev libglew-dev libsuitesparse-dev zlib1g-dev libjpeg-dev \
+RUN sudo apt-get update \
+    && sudo apt-get install -y --no-install-recommends cmake-qt-gui git build-essential libusb-1.0-0-dev libudev-dev openjdk-11-jdk freeglut3-dev libglew-dev libsuitesparse-dev zlib1g-dev libjpeg-dev \
     && cd /root/elstic_ws/src/elastic_bridge/deps/ElasticFusion/third-party/OpenNI2/ \
     && make -j8
 
@@ -133,9 +129,9 @@ RUN cd /root/elstic_ws/src/elastic_bridge/deps/ElasticFusion/ \
     && make -j8
 
 # Compile the package
-RUN cd /root/elstic_ws \
-    && . /opt/ros/noetic/setup.sh \
-    && catkin_make
+# RUN cd /root/elstic_ws \
+#     && . /opt/ros/noetic/setup.sh \
+#     && catkin_make
 
 # Apply the GUID patch
 # COPY guid.patch /root/elstic_ws/src/elastic_bridge/patches/guid.patch

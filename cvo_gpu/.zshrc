@@ -50,5 +50,5 @@ alias l='ls -CF'
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/ros/noetic/setup.zsh
-source ~/ws/catkin_ws/devel/setup.zsh
+source ~/ws/cassie_ros/catkin_ws/devel/setup.zsh
 source /opt/intel/bin/compilervars.sh intel64

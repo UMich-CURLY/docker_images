@@ -28,7 +28,6 @@ plugins=(git cp z cp extract history colorize command-not-found sudo zsh-autosug
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user anaconda dir)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(nvm pyenv time)
-POWERLEVEL9K_DISABLE_GITSTATUS=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -45,10 +44,23 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias pc='proxychains'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup=`"$HOME/miniconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null`
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/ros/noetic/setup.zsh
-source ~/ws/catkin_ws/devel/setup.zsh
-source /opt/intel/bin/compilervars.sh intel64
