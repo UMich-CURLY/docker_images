@@ -59,3 +59,11 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # USER original_user
+# use current user
+ARG USER
+ARG USER_ID
+ARG GROUP_ID
+RUN if  ! grep -q $GROUP_ID /etc/group ; then  groupadd --gid $GROUP_ID $USER; fi 
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USER
+RUN adduser $USER sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
